@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://pbs.twimg.com/profile_images/1345847875066941440/bXtiSNNo.jpg" rel="icon">
+    <meta charset="UTF-8">
+    <title>Create a Jeopardy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      html{
+        background-color:#48049c;
+        color:white;
+      }
+      .col{
+        border:3px black solid;
+        height:9.5vh;
+        max-height:9.5vh !important;
+        font-size:12px;
+        max-width:14vw;
+        overflow:auto;
+      }
+      table{
+        width:100%;
+      }
+      .toppic{
+        background-color:#33036d;
+      }
+      .prob{
+        transition:0.5s;
+      }
+      .prob:hover{
+        background-color:	#804fba;
+        transition:0.5s;
+      }
+      .toppic>input{
+        border:none;
+        width:90%;
+        height:90%;
+        outline:none;
+        background-color:transparent;
+        color:white;
+        text-align:center;
+        font-size:30px;
+      }
+      .toppic>input::placeholder{
+        color:darkgray;
+      }
+      .rowval > input{
+        border:none;
+        width:60px;
+        text-align:center;
+        background-color:transparent;
+        color:white;
+        font-size:20px;
+        outline:none;
+        border-bottom:2px gray solid;
+        transition:0.5s;
+      }
+      .rowval>input:focus{
+        border-bottom:2px white solid;
+        transition:0.5s;
+      }
+      /* The Modal (background) */
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      }
+
+      /* Modal Content/Box */
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+      }
+      .fa{
+        font-size:24px;
+        padding:5px;
+      }
+      .toolbar>button{
+        width:50px !important;
+        float:left;
+        border:none;
+        transition:0.5s;
+      }
+      .toolbar>button:hover{
+        background-color:darkgray;
+        transition:0.5s;
+      }
+      #preview{
+        color:black;
+        font-size:36px;
+        background-color:lightgrey;
+        padding:16px;
+        display:none;
+      }
+      .names{
+        background-color:lightgrey;
+        height:36px;
+        width:50vw;
+        transform:translateX(50%);
+      }
+      #compileplay{
+        text-decoration:none;
+        color: black !important;
+        text-align:center;
+        padding:10px;
+        background-color:white;
+        border:none;
+        border-radius:8px;
+        outline:none;
+      }
+    </style>
+</head>
+<body>
+  <h1>Click on any of the cells below to edit them! (Ignore the letters please)</h1>
+  <table>
+      <tr id="toppics">
+        <th class="col toppic" id="t1"><input placeholder="Insert column topic"></th>
+        <th class="col toppic" id="t2"><input placeholder="Insert column topic"></th>
+        <th class="col toppic" id="t3"><input placeholder="Insert column topic"></th>
+        <th class="col toppic" id="t4"><input placeholder="Insert column topic"></th>
+        <th class="col toppic" id="t5"><input placeholder="Insert column topic"></th>
+      </th>
+      <tr class="qrow" id="col1">
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="rowval"><input value="100" type="number"></th>
+      </tr>
+      <tr class="qrow" id="col2">
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="rowval"><input value="200" type="number"></th>
+      </tr>
+      <tr class="qrow" id="col3">
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="rowval"><input value="300" type="number"></th>
+      </tr>
+      <tr class="qrow" id="col4"> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="rowval"><input value="400" type="number"></th>
+      </tr>
+      <tr class="qrow" id="col5">
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="col prob" onclick="openeditor(this)">["",""]</th> 
+        <th class="rowval"><input value="500" type="number"></th>
+      </tr>
+    </table>
+    <div id="inputstuff" class="modal">
+      <div class="modal-content">
+        <div id="questionprob">
+          <div id="box">
+            <div class="toolbar">
+              <button>
+                <span class="fa fa-bold" aria-hidden="true" onclick="insert('qp', '<b></b>')" title="Bold text"></span>
+              </button>
+              <button>
+                <span class="fa fa-italic" aria-hidden="true" onclick="insert('qp', '<i></i>')" title="Italicize text"></span>
+              </button>
+              <button>
+                <span class="fa fa-underline" aria-hidden="true" onclick="insert('qp', '<u></u>')" title="Underline text"></span>
+              </button>
+              <button>
+                <span class="fa fa-strikethrough" aria-hidden="true" onclick="insert('qp', '<del></del>')" title="Strikethrough text"></span>
+              </button>
+              <button>
+                <span class="fa" aria-hidden="true" onclick="insert('qp', '<span style=\'color:#(hexadecimal code goes here)\'></span>')" style="color:red;" title="Color text">A</span>
+              </button>
+              <button>
+                <span class="fa fa-superscript" aria-hidden="true" onclick="insert('qp', '<sup></sup>')" title="Superscript text"></span>
+              </button>
+              <button>
+                <span class="fa fa-subscript" aria-hidden="true" onclick="insert('qp', '<sub></sub>')" title="Subscript text"></span>
+              </button>
+              <button>
+                <span class="fa fa-image" aria-hidden="true" onclick="insert('qp', '<img src=\'(link of image here)\'>')" title="Insert image"></span>
+              </button>
+              <button>
+                <span class="fa fa-calculator" aria-hidden="true" title="Insert LaTeX"></span>
+              </button>
+              <button>
+                <span class="fa fa-code" aria-hidden="true" onclick="insert('qp','<code></code>')" title="Insert code"></span>
+              </button>
+              <button>
+                <span class="fa fa-eye" aria-hidden="true" onclick="preview()" title="Preview text"></span>
+              </button>
+              <button>
+                <span class="fa fa-eye-slash" aria-hidden="true" onclick="document.getElementById('preview').style.display = 'none'" title="Hide preview"></span>
+              </button>
+              <button>
+                <span class="fa fa-indent" aria-hidden="true" onclick="insert('qp','&emsp;&emsp;')" title="Insert tab"></span>
+              </button>
+            </div><br><br><br>
+            <textarea id="qp" style="width:100%;height:250px;resize:none;outline:none;"></textarea>
+            <textarea id="answertoquestion" placeholder="Answer to the above question" style="width:100%;height:60px;resize:none;outline:none;"></textarea>
+            <button style="width:100%;height:58px;border:none;background-color:black;color:white;" onclick="closeeditor()">Save</button>
+            <div id="preview"></div>
+          </div>
+        </div>
+      </div>
+    </div><br>
+    <button id="compileplay" onclick="window.open('/host?json='+encodeURIComponent(compile()))" target="_blank">Compile and play</button>
+    <!--<form action="/save">
+      <input type="text" maxlength="50" placeholder="Name of this jeopardy" required class="names" name="jeopardyname" autocomplete="off">
+      <input type="text" placeholder="Name of the creator" required class="names" name="creatorname" autocomplete="off">
+      <input type="text" id="jsoncodethingy" required class="names" name="jeopardyjson" placeholder="JSON code will be here" onfocus="this.blur()" style="cursor:not-allowed;">
+      <button style="background-color:black;color:white;cursor:not-allowed;" class="names" disabled id="submit">Submit (you cannot make changes once you click this button!)</button>
+    </form>
+    <button style="background-color:black;color:white;" class="names" onclick="twostepsubmit()" id="undisable">Undisable submit (This is for two-step verification)</button>-->
+    <script>
+      var socket = io()
+      var jsonelmnt;
+      json = {
+        "game":{
+          "topics":[
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "col1":{
+            "1":"",
+            "2":"",
+            "3":"",
+            "4":"",
+            "5":""
+          },
+          "col2":{
+            "1":"",
+            "2":"",
+            "3":"",
+            "4":"",
+            "5":""
+          },
+          "col3":{
+            "1":"",
+            "2":"",
+            "3":"",
+            "4":"",
+            "5":""
+          },
+          "col4":{
+            "1":"",
+            "2":"",
+            "3":"",
+            "4":"",
+            "5":""
+          },
+          "col5":{
+            "1":"",
+            "2":"",
+            "3":"",
+            "4":"",
+            "5":""
+          },
+          "moreinfo":{
+            "price":[
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        }
+      }
+      function insert(element, text){
+        curPos = document.getElementById(element).selectionStart;
+        let x = document.getElementById(element).value;
+        document.getElementById(element).value = (x.slice(0, curPos) + text + x.slice(curPos));
+      }
+      function preview(){
+        var textvalue = document.getElementById("qp").value
+        if (textvalue === ""){
+          document.getElementById("preview").style.display = "none"
+        } else {
+          document.getElementById("preview").innerHTML = textvalue
+          document.getElementById("preview").style.display = "block"
+        }
+        MathJax.typeset()
+      }
+      function openeditor(elmnt){
+        jsonelmnt = elmnt
+        document.getElementById("inputstuff").style.display = "block"
+        getvalue = eval(elmnt.innerText)
+        document.getElementById("qp").value = getvalue[0]
+        document.getElementById("answertoquestion").value = getvalue[1]
+      }
+      function replacehtmlchars(stringy){
+        str = stringy
+        for (let looper=0;looper<stringy.length;looper++){
+          /*str=str.replace("<", "&lt;")
+          str=str.replace(">", "&gt;")*/
+          str=str.replace("\"", "&quot;")
+          str=str.replace("\'", "&apos;")
+          str=str.replace("\\", "&bsol;")
+        }
+        return str
+      }
+      function closeeditor(){
+        jsonelmnt.innerText = "['"+replacehtmlchars(document.getElementById("qp").value.toString())+"','"+replacehtmlchars(document.getElementById("answertoquestion").value.toString())+"']"
+        document.getElementById("inputstuff").style.display = "none"
+        document.getElementById("qp").value = ""
+        document.getElementById("answertoquestion").value = ""
+      }
+      function save(){
+        closeeditor()
+      }
+      function twostepsubmit(){
+        if (document.getElementById("submit").disabled === true){
+          document.getElementById('submit').style.cursor = 'default'
+          document.getElementById('submit').disabled = false
+          document.getElementById('undisable').innerHTML = "Disable submit button"
+        } else {
+          document.getElementById('submit').style.cursor = 'not-allowed'
+          document.getElementById('submit').disabled = true
+          document.getElementById('undisable').innerHTML = "Undisable submit (This is for two-step verification)"
+        }
+      }
+
+      function compile(){
+        compilejs = `{
+"game":{
+"topics":[
+"${document.querySelectorAll(".toppic>input")[0].value}",
+"${document.querySelectorAll(".toppic>input")[1].value}",
+"${document.querySelectorAll(".toppic>input")[2].value}",
+"${document.querySelectorAll(".toppic>input")[3].value}",
+"${document.querySelectorAll(".toppic>input")[4].value}"
+],
+"col1":{
+"${eval(document.querySelectorAll("#col1>th")[0].innerText)[0]}'":"${eval(document.querySelectorAll("#col1>th")[0].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col1>th")[1].innerText)[0]}'":"${eval(document.querySelectorAll("#col1>th")[1].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col1>th")[2].innerText)[0]}'":"${eval(document.querySelectorAll("#col1>th")[2].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col1>th")[3].innerText)[0]}'":"${eval(document.querySelectorAll("#col1>th")[3].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col1>th")[4].innerText)[0]}'":"${eval(document.querySelectorAll("#col1>th")[4].innerText)[1]}'"
+},
+"col2":{
+"${eval(document.querySelectorAll("#col2>th")[0].innerText)[0]}'":"${eval(document.querySelectorAll("#col2>th")[0].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col2>th")[1].innerText)[0]}'":"${eval(document.querySelectorAll("#col2>th")[1].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col2>th")[2].innerText)[0]}'":"${eval(document.querySelectorAll("#col2>th")[2].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col2>th")[3].innerText)[0]}'":"${eval(document.querySelectorAll("#col2>th")[3].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col2>th")[4].innerText)[0]}'":"${eval(document.querySelectorAll("#col2>th")[4].innerText)[1]}'"
+},
+"col3":{
+"${eval(document.querySelectorAll("#col3>th")[0].innerText)[0]}'":"${eval(document.querySelectorAll("#col3>th")[0].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col3>th")[1].innerText)[0]}'":"${eval(document.querySelectorAll("#col3>th")[1].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col3>th")[2].innerText)[0]}'":"${eval(document.querySelectorAll("#col3>th")[2].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col3>th")[3].innerText)[0]}'":"${eval(document.querySelectorAll("#col3>th")[3].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col3>th")[4].innerText)[0]}'":"${eval(document.querySelectorAll("#col3>th")[4].innerText)[1]}'"
+},
+"col4":{
+"${eval(document.querySelectorAll("#col4>th")[0].innerText)[0]}'":"${eval(document.querySelectorAll("#col4>th")[0].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col4>th")[1].innerText)[0]}'":"${eval(document.querySelectorAll("#col4>th")[1].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col4>th")[2].innerText)[0]}'":"${eval(document.querySelectorAll("#col4>th")[2].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col4>th")[3].innerText)[0]}'":"${eval(document.querySelectorAll("#col4>th")[3].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col4>th")[4].innerText)[0]}'":"${eval(document.querySelectorAll("#col4>th")[4].innerText)[1]}'"
+},
+"col5":{
+"${eval(document.querySelectorAll("#col5>th")[0].innerText)[0]}'":"${eval(document.querySelectorAll("#col5>th")[0].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col5>th")[1].innerText)[0]}'":"${eval(document.querySelectorAll("#col5>th")[1].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col5>th")[2].innerText)[0]}'":"${eval(document.querySelectorAll("#col5>th")[2].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col5>th")[3].innerText)[0]}'":"${eval(document.querySelectorAll("#col5>th")[3].innerText)[1]}'",
+"${eval(document.querySelectorAll("#col5>th")[4].innerText)[0]}'":"${eval(document.querySelectorAll("#col5>th")[4].innerText)[1]}'"},"moreinfo":{"price":[
+"${document.querySelectorAll(".rowval>input")[0].value}",
+"${document.querySelectorAll(".rowval>input")[1].value}",
+"${document.querySelectorAll(".rowval>input")[2].value}",
+"${document.querySelectorAll(".rowval>input")[3].value}",
+"${document.querySelectorAll(".rowval>input")[4].value}"
+]}}}`
+        return compilejs
+      }
+      setInterval(function(){document.getElementById("jsoncodethingy").value = compile()},2000)
+    </script>
+</body>
+</html>

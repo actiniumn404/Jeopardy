@@ -1,0 +1,56 @@
+{
+  "game":{
+    "topics":[
+      "Math",
+      "Science",
+      "&nbsp;&nbsp;2020&nbsp;&nbsp;",
+      "Geography",
+      "Programming"
+    ],
+    "col1":{
+      "1+1=":"2",
+      "What is the 16th element in the periodic table:":"sulfur",
+      "What disaster that emerged in 2020 and is currently haunting the world?":"COVID-19",
+      "What is geography?":"Geography is a field of science devoted to the study of the lands, features, inhabitants, and phenomena of the Earth and planets. <span style='color:blue'><sup>[Wikipedia]</sup></span>",
+      "What language is this coded in?":"HTML, CSS< JavaScript"
+    },
+    "col2":{
+      "Use the Pythagorean Theorem: 50,120, ?":"130",
+      "Who made the periodic table":"Mendeleev",
+      "Name the game that spiked in 2020":"Among us",
+      "What are the 5 continents?":"North America, South America, Europe, Asia, Africa, Australia, Antarctica.",
+      "Name the two people who created among you.py":"Wesley Wu and Andrew Chen"
+    },
+    "col3":{
+      "Rectangle ABCD is inscribed in a semicircle with diameter FE, as shown in the figure. Let DA=16, and let FD=AE=9. What is the area of ABCD?<br><img src='https://latex.artofproblemsolving.com/3/c/9/3c9c1a2a36307aa14183c77012405d57721363d4.png'>":"240",
+      "(True or False) Dihydrogen monoxide (DHMO) is a dangerous substance that can kill you in large amounts":"True, but false. DHMO = Water (H2O), which can kill you in large amounts. Water isn't that dangerous.",
+      "Which disaster nearly destroyed 12.6 million hectares of land":"The 2020 Australian Bushfires",
+      "What is the tallest mountain on Earth? (starting at its base)":"Mauna Kea, Hawaii",
+      "Name my coding platform":"repl.it"
+    },
+    "col4":{
+      "Evaluate <img src='https://latex.artofproblemsolving.com/f/1/2/f12902616f1c056b39b44fefe18c975817ec1508.png'>":"-8",
+      "What is the longest scientific word?":"PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS",
+      "What is the city where an African man was killed, which sparked protests?":"Minneapolis",
+      "What is the capital of Catuxpital":"FAKE it doesn't exist",
+      "List some popular languages that need a compiler to run":"C, C++, Erlang, Haskell, Rust, Java, Ruby, etc."
+    },
+    "col5":{
+      "What is <img src='https://latex.artofproblemsolving.com/6/d/c/6dcf835057699ec1f45a0a6d32c0cce8ca6ef047.png'>":"1",
+      
+      "Find the Relative atomic mass  (average atomic mass) with this data:<br><table><style>th{border:2px solid black;width:100px;height:60px;font-size:24px;}</style><tr><th>Isotope</th><th>Atomis Mass</th><th>Abundance</th></tr><tr><th>Tungsten-182</th><th>181.948</th><th>26.50%</th></tr><tr><th>Tungsten-183</th><th>182.950</th><th>14.31%</th></tr><tr><th>Tungsten-184</th><th>183.950</th><th>30.64%</th></tr><tr><th>Tungsten-186</th><th>185.954</th><th>28.45%</th></tr></table><span style='font-size:18px';>muahahahahaha</span>":"183.662558",
+      "Name the date where the 45th president of the U.S. was impeached for the second time":"January 13, 2021",
+      "Name a mountain range in Washington (State)":"Cascades",
+      "Name a language that needs two other languages to function and look good":"HTML"
+    },
+    "moreinfo":{
+      "price":[
+        "100",
+        "200",
+        "300",
+        "400",
+        "500"
+      ]
+    }
+  }
+}

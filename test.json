@@ -1,0 +1,55 @@
+{
+  "game":{
+    "topics":[
+      "Andrew",
+      "Wesley",
+      "Omkar",
+      "Kevin",
+      "Lucas"
+    ],
+    "col1":{
+      "Did Andrew make this?":"yes",
+      "Wesley likes python?":"yes",
+      "The topic of this is":"omkar",
+      "he loves to make what comic?":"bear comics",
+      "Lucas's mom is...":"yes"
+    },
+    "col2":{
+      "Did Andrew make this?":"yes",
+      "Wesley likes python?":"yes",
+      "The topic of this is":"omkar",
+      "he loves to make what comic?":"bear comics",
+      "Lucas's mom is...":"yes"
+    },
+    "col3":{
+      "Did Andrew make this?":"yes",
+      "Wesley likes python?":"yes",
+      "The topic of this is":"omkar",
+      "he loves to make what comic?":"bear comics",
+      "Lucas's mom is...":"yes"
+    },
+    "col4":{
+      "Did Andrew make this?":"yes",
+      "Wesley likes python?":"yes",
+      "The topic of this is":"omkar",
+      "he loves to make what comic?":"bear comics",
+      "Lucas's mom is...":"yes"
+    },
+    "col5":{
+      "Did Andrew make this?":"yes",
+      "Wesley likes python?":"yes",
+      "The topic of this is":"omkar",
+      "he loves to make what comic?":"bear comics",
+      "Lucas's mom is...":"yes"
+    },
+    "moreinfo":{
+      "price":[
+        "100",
+        "200",
+        "300",
+        "400",
+        "500"
+      ]
+    }
+  }
+}

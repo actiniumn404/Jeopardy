@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Join a game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://pbs.twimg.com/profile_images/1345847875066941440/bXtiSNNo.jpg" rel="icon">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+      html{
+        background-color:#48049c;
+      }
+      *{
+        text-align:center;
+        color:white;
+      }
+      #error{
+        position:absolute;
+        width:75vw;
+        background-image: linear-gradient(to right, #ad0d0d, #d11e1e, #f32c2c);
+        color: white;
+        padding: 17px;
+        border-radius: 5px;
+        margin-left:12vw;
+        font-family: Arial, sans-serif !important;
+        border: none;
+        display: block;
+        bottom:20px;
+      }
+      input[type=text], input[type=number]{
+        background-color:white;
+        border:3px solid darkgray;
+        outline:none;
+        color:black;
+        width:30vw;
+        height:65px;
+        font-size:24px;
+        margin:5px;
+      }
+      form{
+        padding:1vw;
+        border:1px solid white;
+        width:50vw;
+        margin-left:25vw;
+      }
+      input[type=submit]{
+        outline:none;
+        width:30.8vw;
+        height:45px;
+        border:none;
+        background-color:#4CAF50;
+        font-size:18px;
+        border-radius:5px;
+      }
+      /*guess*/
+      main > h1{
+        color:#c953bf;
+        position:absolute;
+        font-size:60px;
+        left:50%;
+        margin-top:20px;
+        transform: translate(-50%, -50%);
+      }
+      main > span{
+        position:absolute;
+        left:50%;
+        margin-top:120px;
+        transform: translate(-50%, -50%);
+        font-size:18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar">
+    </div>
+    <span id="error">No error. If there is one. There might be an error on this error message :|</span>
+    <b><h1>Join a game!</h1></b>
+    <form action="/play">
+      <input type="text" name="name" placeholder="Username..." autocomplete="off" required maxlength="25"><br>
+      <input id="code" type="number" name="code" placeholder="Code..." autocomplete="off" required min="10000" max="99999"><br>
+      <input type="submit">
+    </form>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const num = urlParams.get("error")
+      const code = urlParams.get("code")
+      if (num){
+        document.getElementById("error").innerText = num;
+        document.querySelector("title").innerHTML = "Error! Error!"
+      }else{
+        document.getElementById("error").style.display="none"
+      }
+      if (code){
+        document.getElementById("code").value = code
+        document.querySelector("title").innerHTML = "Join game "+code
+      }
+      fetch("/navbar").then(data=>data.text()).then(data=>document.getElementById("navbar").innerHTML = data)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link href="https://pbs.twimg.com/profile_images/1345847875066941440/bXtiSNNo.jpg" rel="icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      html{
+        background-color:#48049c;
+        padding:0;
+        margin:0;
+      }
+      .col{
+        border:3px black solid;
+        height:9.5vh;
+        font-size:36px;
+      }
+      table{
+        width:100%;
+      }
+      .toppic{
+        background-color:#33036d;
+      }
+      .prob{
+        transition:0.5s;
+      }
+      .prob:hover{
+        background-color:	#804fba;
+        transition:0.5s;
+      }
+      @keyframes animatezoom {
+        from {transform: scale(0)}
+        to {transform: scale(1)}
+      }
+      #cardd{
+        animation: animatezoom 0.6s;
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%; 
+        background-color:#48049c;
+        overflow:auto;
+      }
+      #inputans{
+        outline:none;
+      }
+      .notif {
+        position:absolute;
+        top:0;
+        width:75vw;
+        background-image: linear-gradient(to right, #53AD0D, #72D11E, #90F32C);
+        color: white;
+        padding: 17px;
+        border-radius: 5px;
+        margin: 1vh 12vw;
+        font-family: Arial, sans-serif !important;
+        border: none;
+        display: block;
+      }
+      .animate{
+        animation: animatezoom 0.6s;
+      }
+      .animateout{
+        animation: animatezoomout 0.6s;
+      }
+      .visited{
+        opacity:0.5;
+        cursor:not-allowed;
+        background-color:	#b69bd7;
+      }
+      .visited:hover{
+        background-color:	#b69bd7 !important;
+      }
+      button.pill{
+        width:150px;
+        height:40px;
+        border-radius:10px;
+        outline:none;
+        border:none;
+        background-color:#32a897;
+        color:white;
+      }
+      button.pill:active{
+        opacity:0.8;
+      }
+      .name{ 
+        background-color:white;
+        padding:10px;
+        margin:5px;
+        width:auto;
+        border-radius:5px;
+        color:black;
+        width:fit-content; 
+        block-size: fit-content;
+        text-align:center;
+        float:left;
+        transition:0.5s;
+      }
+      .name:hover{
+        transition:0.5s;
+        transform:rotate(15deg);
+        color:red;
+        text-decoration:line-through;
+      }
+      .scoreframe{
+        width:200px;
+        height:200px;
+        background-color:white;
+        float:left;
+        margin:5px;
+        border-radius:10px;
+        text-align:center;
+        color:black;
+      }
+      .scoreframe>p{
+        font-weight:bolder;
+        font-size:26px;
+        margin:20px;
+      }
+      .scoreframe>input{
+        width:160px;
+        height:30px;
+        font-size:24px;
+      }
+      .scoreframe>input::before{
+        content:"$";
+      }
+      #chat {
+        z-index:10000000000;
+        right:-340px;
+        transition:0.5s;
+        text-align:left !important;
+        position: fixed;
+        width:320px;
+        height:400px;
+        bottom:20px;
+        background-color:	#7f4faf;
+        margin: 0;
+        margin-bottom: 3rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        overflow:auto;
+      }
+      
+      #form {
+        vertical-align:bottom;
+        position:fixed; 
+        width:320px;
+        padding: 0.25rem;
+        margin-bottom:15px;
+        background-color:rgba(0, 0, 0, 0.15);
+        /*left: 0;
+        right: 0;*/
+        bottom:5px;
+        display: flex;
+        height: 3rem;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+      
+      #input {
+        border: none;
+        padding: 0 1rem;
+        flex-grow: 1;
+        border-radius: 2rem;
+        margin: 0.25rem;
+      }
+      
+      #input:focus {
+        outline: none;
+      }
+      
+      #form>button {
+        background: #333;
+        border: none;
+        padding: 0 1rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        outline: none;
+        color: #fff;
+      }
+      
+      #messages {
+        max-height:400px;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      
+      #messages>li {
+        padding: 0.5rem 1rem;
+      }
+      
+      #messages>li:nth-child(odd) {
+        background: #9168ba;
+      }
+      #chatcon{
+        right:-60px;
+        overflow:auto;
+        position:absolute;
+        background-color:white;
+        padding:10px;
+        bottom:50px;
+        right:0;
+        z-index:1000000000;
+        border-radius:20px 0px 0px 20px;
+        transition:0.5s;
+      }       
+      .class{
+        position:absolute;
+        right:10px;
+        font-size:48px;
+        color:white;
+      }
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      }
+      .modal-content {
+        background-color: #141414;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+      }
+      .newuser-btn{
+        margin:2.5px;
+        width:100%;
+        height:50px;
+        outline:none;
+        border:none;
+        background-color:#212121;
+        color:gray;
+        transition:0.5s;
+        font-size:12px;
+      }
+      .newuser-btn.none:hover, .newuser-btn.none:active{
+        background-color:#242424;
+        transition:0.5s;
+      }
+      .newuser-btn.selected{
+        background-color:#303030;
+        color:white;
+        font-size:24px;
+      }
+      .gosubmit {
+        outline:none;
+        width: 100px;
+        height: 40px;
+        margin-bottom: 10px;
+        background-color: whitesmoke;
+        color: black;
+        transition: 1s;
+        border-radius: 10px;
+        border: 2px black solid;
+        animation:fade 2s infinite;
+      }
+
+      .gosubmit:hover {
+        background-color: black;
+        color: white;
+        transition:1s;
+        border:2px solid white;
+      }
+      @keyframes fade{
+        0%{box-shadow:0px 0px 16px white;}
+        50%{box-shadow:0px 0px 0px white;}
+        100%{box-shadow:0px 0px 16px white;}
+      }
+      #loading>button:disabled{
+        opacity:0.5;
+      }
+    /* The snackbar - position it at the bottom and in the middle of the screen */
+    #snackbar {
+      visibility: hidden; /* Hidden by default. Visible on click */
+      min-width: 250px; /* Set a default minimum width */
+      margin-left: -125px; /* Divide value of min-width by 2 */
+      background-color: #333; /* Black background color */
+      color: #fff; /* White text color */
+      text-align: center; /* Centered text */
+      border-radius: 2px; /* Rounded borders */
+      padding: 16px; /* Padding */
+      position: fixed; /* Sit on top of the screen */
+      z-index: 1; /* Add a z-index if needed */
+      left: 50%; /* Center the snackbar */
+      bottom: 30px; /* 30px from the bottom */
+    }
+
+    /* Show the snackbar when clicking on a button (class added with JavaScript) */
+    #snackbar.show {
+      visibility: visible; /* Show the snackbar */
+      /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+      However, delay the fade out process for 2.5 seconds */
+      -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    /* Animations to fade the snackbar in and out */
+    @-webkit-keyframes fadein {
+      from {bottom: 0; opacity: 0;}
+      to {bottom: 30px; opacity: 1;}
+    }
+
+    @keyframes fadein {
+      from {bottom: 0; opacity: 0;}
+      to {bottom: 30px; opacity: 1;}
+    }
+
+    @-webkit-keyframes fadeout {
+      from {bottom: 30px; opacity: 1;}
+      to {bottom: 0; opacity: 0;}
+    }
+
+    @keyframes fadeout {
+      from {bottom: 30px; opacity: 1;}
+      to {bottom: 0; opacity: 0;}
+    }
+    </style>
+    <script>
+      
+    </script>
+</head>
+<body style="color:white;text-align:center;" onbeforeunload="de()">
+  <div id="loading">
+    <h1>
+      <span id="header">[Generating game code. Be patient]</span>
+      <button id="ctcfl" onclick="" disabled style="font-size:36px;border:none;outline:none;background-color:transparent;color:lightgray">
+        <i class="fa fa-clipboard" onclick="copycode()"></i>
+      </button>
+    </h1>
+    <button id="startt" class="pill" disabled style="transition:0.5s;">Start Game</button><br>
+  </div>
+  <div id="gamee" style="display:none;">
+    <b><h1>Jeopardy!</h1></b>
+    <table>
+      <tr id="toppics">
+        <th class="col toppic" id="t1">Lorem</th>
+        <th class="col toppic" id="t2">Lorem</th>
+        <th class="col toppic" id="t3">Lorem</th>
+        <th class="col toppic" id="t4">Lorem</th>
+        <th class="col toppic" id="t5">Lorem</th>
+      </th>
+      <tr class="qrow" id="col1">
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+      </tr>
+      <tr class="qrow" id="col2">
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+      </tr>
+      <tr class="qrow" id="col3">
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+      </tr>
+      <tr class="qrow" id="col4"> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+      </tr>
+      <tr class="qrow"  id="col5">
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+        <th class="col prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');current_val = parseFloat(this.innerHTML)"></th> 
+      </tr>
+    </table>
+    <div id="cardd" style="display:none;">
+      <h1 style="color:white;font-size:64px;margin-top:20vh;"><span id="qans">[Loading Question]</span><br><span style="font-size:36px;color:lime;">Correct answer: <span id="correctans">[Loading...]</span></span></h1>
+      <textarea id="inputans" placeholder="Insert your answer"></textarea><br>
+      <button id="sans" onclick="socket.emit('eval', code+'show_answer()');document.getElementById('stillnq').disabled=true;this.disabled=true;setTimeout(function(){document.getElementById('stillnq').disabled=false; document.getElementById('sans').disabled=false;},2000);socket.emit('host choose next player', code+'\'');">Show Answer</button><button id="stillnq" onclick="nq();socket.emit('host choose next player', code+'\'');newuser()">Next Question</button>
+      <div id="correctanswear" style="margin-top:10px;display:none;">
+        <button style="color:white;background-color:green;width:75px;height:75px;font-size:48px;border:none;margin-right:10px;float:left;margin-left:46vw;outline:none;" onclick="socket.emit('score', code+'correct'); document.getElementById('correctanswear').style.display='none';autoscore(true)">✔</button>
+        <button style="color:white;background-color:red;width:75px;height:75px;font-size:48px;border:none;float:left;outline:none;" onclick="socket.emit('score', code+'incorrect');document.getElementById('correctanswear').style.display='none';autoscore(false)">&times;</button>
+      </div>
+    </div>
+  </div>
+  <img src="https://static.thenounproject.com/png/2206184-200.png" id="chatcon" height="40px;" onclick='document.getElementById("chatcon").style.right="-60px";document.getElementById("chat").style.right = "20px";setTimeout(function(){document.getElementById("chatcon").style.display="none";}, 500)'>
+  <div id="chat">
+    <span class="class" onclick='document.getElementById("chatcon").style.display="block";document.getElementById("chatcon").style.right="0px";document.getElementById("chat").style.right = "-340px";'>&nbsp;&times;</span>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+  </div>
+  <div id="newuser" class="modal">
+    <span style="color:white;background-color:red;position:absolute;right:0px;top:0px;width:65px;height:65px;font-size:48px;" onclick="document.getElementById('newuser').style.display='none';redo_newuser()">-</span>
+    <div class="modal-content" id="newuser-mcc">
+      <p style="color:white !important;font-size:48px;font-weight:bolder;margin:0px !important;padding-bottom:15px;">Chose a new user</p>
+      <div id="newuser-mc">
+      </div>
+      <button class="gosubmit" onclick="savee()">Save</button>
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    var socket = io();
+    var jsonstr = new Map()
+    var prv = []
+    var code = null
+    var players = new Map()
+    var gotcode = false
+    var gamestart = false
+    var current_user = undefined
+    var current_val = 0
+    const urlParams = new URLSearchParams(window.location.search);
+    const jsoncode = JSON.parse(urlParams.get("json"))
+    var jsonsend = false
+
+    function de(){
+      socket.emit('unload', code)
+    }
+    function key(map, num){
+      obj = Object.keys(map)
+      return obj[num]
+    }
+    function render(jsonstr){
+      for (var topp = 1;topp<6;topp++){
+          document.getElementById("t"+topp.toString()).innerHTML = (jsonstr.game.topics[topp-1])
+        }
+        a = document.querySelectorAll(".prob")
+        for (var num = 0;num<5;num++){
+          pr = jsonstr.game.moreinfo.price[num]
+          a[num*5].innerHTML=pr
+          a[num*5+1].innerHTML=pr
+          a[num*5+2].innerHTML=pr
+          a[num*5+3].innerHTML=pr
+          a[num*5+4].innerHTML=pr
+        }
+    }
+    window.onload = function(){
+      document.getElementById("chatcon").style.right="0px;"
+      setTimeout(()=>{socket.emit("host online confirm", "")}, 100)
+
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var myObj = JSON.parse(this.responseText);
+        jsonstr = myObj
+        render(jsonstr)
+      }
+    };
+    if (jsoncode){
+      render(jsoncode)
+      jsonsend = true
+      jsonstr = jsoncode
+    }else{
+      socket.emit("json string", code+"nothing")
+      xmlhttp.open("GET", "testgame.json", true);
+      xmlhttp.send();
+    }
+    /*ids = document.querySelectorAll(".prob" onclick="show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited')")
+    for (var z = 0;z<ids.length;ids++){
+      ids[z].onclick=""
+    }*/
+    }
+    function show(parent, index, element){
+        thing = `element=document.querySelectorAll('#${parent}>th')[${index}];element.onclick='';element.classList.add('visited')`
+        socket.emit("eval", code+thing)
+        socket.emit("nodejs eval", `CHOSEN.get("${code}").push("${parent}"+"${index}")`)
+        document.getElementById("inputans").value=""
+        socket.emit("question select", [code, parent, index, element])
+        $("#cardd").css("display", "block")
+        keyy = key(eval("jsonstr.game."+parent), index)
+        $("#qans").html(keyy)
+        ans=eval(`jsonstr.game.${parent}["${keyy}"]`)
+        $("#correctans").html(ans)
+        MathJax.typeset();
+    }
+    socket.on("answer data", (data)=>{
+      document.getElementById("inputans").value = data
+    })
+    socket.on("question select", (data)=>{
+      data = eval(data)
+      if (data !== prv){
+        show(data[0], data[1], data[2])
+        prv = data
+      }
+    })
+    socket.on("host eval", (data)=>{
+      eval(data)
+      console.log(data)
+    })
+    function copy() {
+      var copyText = document.querySelector("#idcode");
+      copyText.select();
+      document.execCommand("copy");
+    }
+    socket.on("host id", (e)=>{
+      if (gotcode === false){
+        $("#header").html("Join this game with code: <span id='idcode'>"+e+"</span>")
+        code = e.toString()
+        socket.emit("nodejs eval", "socket.join('"+code+"')")
+        gotcode = true
+        document.getElementById("startt").disabled = false
+        document.getElementById("ctcfl").disabled = false
+        document.getElementById("ctcfl").onclick = "copy()"
+        if (jsonsend === true){
+          socket.emit("json string", code+JSON.stringify(jsoncode))
+        }
+      }
+    })
+    function create_notif(text){
+      x = document.createElement("SPAN")
+      y=document.createTextNode(text)
+      x.classList.add("notif")
+      x.classList.add("animate")
+      x.appendChild(y)
+      document.body.appendChild(x)
+      setTimeout(()=>{x.classList.add("animateout");setTimeout(()=>{x.remove()},600)},2000)
+    }
+    socket.on("check answer", (data)=>{
+      document.getElementById("correctanswear").style.display='block';
+    })
+    function nq(){
+      socket.emit('eval', code+'document.getElementById("cardd").style.display="none"')
+      document.getElementById("cardd").style.display="none"
+    }
+    document.getElementById("startt").onclick=function(){
+      socket.emit("eval", code+"document.getElementById('loading').style.display='none';document.getElementById('gamee').style.display = 'block';")
+      gamestart = true
+      thing = Array.from(players.keys())
+      thing.unshift(code.toString())
+      socket.emit("do_scores", thing)
+      document.getElementById('loading').style.display="none"
+      $('#gamee').show()
+      redo_scores()
+      socket.emit("eval", code+"create_notif('One sec, the host is choosing which player should go first')")
+      newuser()
+    }
+    function addnametoboard(name){
+      if (gamestart == true){
+        socket.emit("eval", code+"document.getElementById('loading').style.display='none';document.getElementById('gamee').style.display = 'block';")
+        socket.emit("nodejs eval", `io.to("${code}").emit("initthequestiondisable", CHOSEN)`)
+      }
+      namelist = document.createElement("DIV")
+      namelist.classList.add("name")
+      textforthename = document.createTextNode(name)
+      namelist.appendChild(textforthename)
+      namelist.setAttribute("id", "name"+name)
+      create_scores(name)
+      namelist.setAttribute("onclick", "socket.emit('host user kick', code+this.innerText);players.delete(this.innerText);this.remove();namee=this.innerText;for (var rep = 0;rep<name.length;rep++){namee = namee.replace(' ', '_')}document.getElementById('score'+namee).remove();redo_scores()")
+      document.getElementById("loading").appendChild(namelist)
+      players.set(name, name)
+      redo_scores()
+    }
+    function create_scores(named){
+      name = named
+      for (var rep = 0;rep<named.length;rep++){
+        var name = name.replace(' ', '_')
+      }
+      frame = document.createElement("DIV")
+      frame.setAttribute("id", "score"+name)
+      frame.setAttribute("name", named)
+      frame.classList.add("scoreframe")
+      scoree = document.createElement("P")
+      textt = document.createTextNode(named)
+      points = document.createElement("INPUT")
+      points.setAttribute("id", name+"valuee")
+      points.setAttribute("onkeydown", "keydownscore('"+(name+"valuee")+"')")
+      points.setAttribute("value", "0")
+      points.classList.add("scoredisplay")
+      points.style.textAlign = "center"
+      kickme = document.createElement("BUTTON")
+      kickmetext = document.createTextNode("Kick!")
+      kickme.setAttribute("onclick", "name='"+named+"';document.getElementById('"+"score"+name+"').remove();socket.emit('host user kick', code+name);players.delete(name);redo_scores()")
+      kickme.appendChild(kickmetext)
+      scoree.appendChild(textt)
+      frame.appendChild(scoree)
+      frame.appendChild(document.createElement("HR"))
+      frame.appendChild(points)
+      frame.appendChild(kickme)
+      document.getElementById("gamee").appendChild(frame)
+    }
+    function redo_scores(){
+      socket.emit('eval',code+'$(".scoreframe").remove()')
+      thing = Array.from(players.keys())
+      $(".scoreframe").remove()
+      thing.forEach(element=>create_scores(element))
+      thing.unshift(code.toString())
+      socket.emit("do_scores", thing)
+    }
+    function keydownscore(elem){
+      setTimeout(()=>{socket.emit("eval", code+"document.getElementById('"+elem+"').value = '"+document.getElementById(elem).value+"'")}, 1)
+    }
+    function autoscore(tf){
+      usrrp = current_user
+      if (tf === false){
+        for (let rep = 0;rep<current_user.length;rep++){
+          usrrp = usrrp.replace(' ', '_')
+        }
+        document.getElementById(usrrp+"valuee").value = parseFloat(document.getElementById(usrrp+"valuee").value) - parseFloat(current_val)
+      }
+      if (tf === true){
+        for (let rep = 0;rep<current_user.length;rep++){
+          usrrp = usrrp.replace(' ', '_')
+        }
+        document.getElementById(usrrp+"valuee").value = parseFloat(document.getElementById(usrrp+"valuee").value) + parseFloat(current_val)
+      }
+      keydownscore(usrrp+"valuee")
+    }
+    //for chat
+    var form = document.getElementById('form');
+    var input = document.getElementById('input');
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      if (input.value) {
+        socket.emit('chat message', code+"host: "+input.value);
+        input.value = '';
+      }
+    });
+
+    socket.on('chat message', (msg)=>{
+      var item = document.createElement('li');
+      item.textContent = msg;
+      messages.appendChild(item);
+      document.getElementById("chat").scrollTo(0, document.getElementById("chat").scrollHeight);
+    });
+    function newuser(){
+      document.getElementById("newuser").style.display="block";
+      document.querySelectorAll(".newuser-btn").forEach(element=>element.remove())
+      nameee = Array.from(players.keys())
+      for (let iterable = 0;iterable<nameee.length;iterable++){
+        console.log("dasf")
+        userinstall = document.createElement("BUTTON");
+        userinstall.innerHTML = nameee[iterable]
+        userinstall.classList.add("newuser-btn", "none")
+        userinstall.setAttribute("onclick", "resetselect();this.classList.add('selected');current_user=this.innerHTML")
+        console.log(userinstall)
+        document.getElementById("newuser-mc").appendChild(userinstall)
+      }
+    }
+    function resetselect(){
+      newuserselectors = document.querySelectorAll(".newuser-btn")
+      for (let reseti = 0;reseti<newuserselectors.length;reseti++){
+        newuserselectors[reseti].classList.remove("selected", "none")
+        newuserselectors[reseti].classList.add("none")
+      }
+    }
+    function createstartround(){
+      startroundbtn = document.createElement("BUTTON");
+      startroundbtn.classList.add("gosubmit")
+      startroundbtntext = document.createTextNode("Start round")
+      startroundbtn.setAttribute("style", "position:absolute;top:10px;left:10px;")
+      startroundbtn.setAttribute("onclick", "starttround();this.remove()")
+      startroundbtn.appendChild(startroundbtntext)
+      document.getElementById("gamee").appendChild(startroundbtn)
+    }
+    function savee(){
+      socket.emit('host choose next player', code+'\'');
+      document.getElementById('newuser').style.display='none';
+      createstartround();
+      socket.emit('eval', code+'create_notif("The host has chosen the user: '+current_user+' to chose and answer the next question. Stand by for the round to start.")')
+    }
+    function starttround(){
+      socket.emit('host choose next player', code+current_user);
+      socket.emit('eval', code+'create_notif("The round has started!!!")')
+    }
+    function redo_newuser(){
+      redonew = document.createElement("BUTTON")
+      redonew.classList.add("gosubmit")
+      redonew.setAttribute("onclick", "newuser();this.remove()")
+      redonew.setAttribute("style", "position:absolute;top:10px;left:10px;")
+      redonewtxt = document.createTextNode("Chose a new user")
+      redonew.appendChild(redonewtxt)
+      document.getElementById("gamee").appendChild(redonew)
+    }
+    function copycode(){
+      inputcode = document.getElementById("loading").appendChild(document.createElement("INPUT"))
+      inputcode.id = "copymecode"
+      inputcode.value= "https://jeopardy.andrewchen51.repl.co/join?code="+code
+      inputcode.select();
+      inputcode.setSelectionRange(0, 99999); 
+      document.execCommand("copy");
+      inputcode.remove()
+      snackbar("Link has been copied!")
+    }
+    function snackbar(text) {
+      // Get the snackbar DIV
+      var snack = document.body.appendChild(document.createElement("DIV"));
+      snack.textContent = text 
+      snack.id = "snackbar"
+      // Add the "show" class to DIV
+      snack.className = "show";
+      // After 3 seconds, remove the show class from DIV
+      setTimeout(function(){ snack.className = snack.className.replace("show", ""); setTimeout(function(){snack.remove()}, 500)}, 3000);
+    }
+  </script>
+</body>
+</html>

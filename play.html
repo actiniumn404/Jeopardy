@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Play</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link href="https://pbs.twimg.com/profile_images/1345847875066941440/bXtiSNNo.jpg" rel="icon">
+    <style>
+      html{
+        background-color:#48049c;
+        padding:0;
+        margin:0;
+      }
+      .col{
+        border:3px black solid;
+        height:9.5vh;
+        font-size:36px;
+      }
+      table{
+        width:100%;
+      }
+      .toppic{
+        background-color:#33036d;
+      }
+      .prob{
+        transition:0.5s;
+      }
+      .prob:hover{
+        background-color:	#804fba;
+        transition:0.5s;
+      }
+      @keyframes animatezoom {
+        from {transform: scale(0)}
+        to {transform: scale(1)}
+      }
+      @keyframes animatezoomout {
+        from {transform: scale(1)}
+        to {transform: scale(0)}
+      }
+      #cardd{
+        animation: animatezoom 0.6s;
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%; 
+        background-color:#48049c;
+        overflow:auto;
+      }
+      #inputans{
+        outline:none;
+      }
+      .notif {
+        position:absolute;
+        top:0;
+        width:75vw;
+        background-image: linear-gradient(to right, #53AD0D, #72D11E, #90F32C);
+        color: white;
+        padding: 17px;
+        border-radius: 5px;
+        margin: 1vh 12vw;
+        font-family: Arial, sans-serif !important;
+        border: none;
+        display: block;
+      }
+      .animate{
+        animation: animatezoom 0.6s;
+      }
+      .animateout{
+        animation: animatezoomout 0.6s;
+      }
+      .visited{
+        opacity:0.5;
+        cursor:not-allowed;
+        background-color:	#b69bd7;
+      }
+      .visited:hover{
+        background-color:	#b69bd7 !important;
+      }
+      .scoreframe{
+        width:200px;
+        height:200px;
+        background-color:white;
+        float:left;
+        margin:5px;
+        border-radius:10px;
+        text-align:center;
+        color:black;
+      }
+      .scoreframe>p{
+        font-weight:bolder;
+        font-size:26px;
+      }
+      .scoreframe>input{
+        width:160px;
+        height:30px;
+        font-size:24px;
+      }
+      .scoreframe>input::before{
+        content:"$";
+      }
+      /*For chat*/
+      #chat {
+        z-index:10000000000;
+        right:-340px;
+        transition:0.5s;
+        text-align:left !important;
+        position: fixed;
+        width:320px;
+        height:400px;
+        bottom:20px;
+        background-color:	#7f4faf;
+        margin: 0;
+        margin-bottom: 3rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        overflow:auto;
+      }
+      
+      #form {
+        vertical-align:bottom;
+        position:fixed; 
+        width:320px;
+        padding: 0.25rem;
+        margin-bottom:15px;
+        background-color:rgba(0, 0, 0, 0.15);
+        /*left: 0;
+        right: 0;*/
+        bottom:5px;
+        display: flex;
+        height: 3rem;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+      
+      #input {
+        border: none;
+        padding: 0 1rem;
+        flex-grow: 1;
+        border-radius: 2rem;
+        margin: 0.25rem;
+      }
+      
+      #input:focus {
+        outline: none;
+      }
+      
+      #form>button {
+        background: #333;
+        border: none;
+        padding: 0 1rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        outline: none;
+        color: #fff;
+      }
+      
+      #messages {
+        max-height:400px;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      
+      #messages>li {
+        padding: 0.5rem 1rem;
+      }
+      
+      #messages>li:nth-child(odd) {
+        background: #9168ba;
+      }
+      #chatcon{
+        right:-60px;
+        overflow:auto;
+        position:absolute;
+        background-color:white;
+        padding:10px;
+        bottom:50px;
+        right:0;
+        z-index:1000000000;
+        border-radius:20px 0px 0px 20px;
+        transition:0.5s;
+      } 
+      .class{
+        position:absolute;
+        right:10px;
+        font-size:48px;
+        color:white;
+      }
+    </style>
+    <script>
+      
+    </script>
+</head>
+<body style="color:white;text-align:center;" onbeforeunload="deletethisuser()">
+  <div id="loading">
+    <h1>Thank you for joining this game! Please wait for your host to start this game.</h1>
+    <p>While you wait, please look at these images</p>
+    <img src="https://hireukrainiandevelopers.com/wp-content/uploads/2019/11/top-10-programming-languages-min.png.webp">
+  </div>
+  <div id="gamee" style="display:none;">
+    <b><h1>Jeopardy!</h1></b>
+    <div id="tableblock"></div>
+    <table>
+      <tr id="toppics">
+        <th class="col toppic" id="t1">Lorem</th>
+        <th class="col toppic" id="t2">Lorem</th>
+        <th class="col toppic" id="t3">Lorem</th>
+        <th class="col toppic" id="t4">Lorem</th>
+        <th class="col toppic" id="t5">Lorem</th>
+      </th>
+      <tr class="qrow" id="col1">
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+      </tr>
+      <tr class="qrow" id="col2">
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+      </tr>
+      <tr class="qrow" id="col3">
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+      </tr>
+      <tr class="qrow" id="col4"> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+      </tr>
+      <tr class="qrow"  id="col5">
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+        <th class="col prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited');socket.emit('host eval', code+'current_val='+this.innerHTML)}"></th> 
+      </tr>
+    </table>
+    <div id="cardd" style="display:none;">
+      <h1 id="answerkey" style="color:white;font-size:64px;margin-top:40vh;display:none;"></h1>
+      <div id="carddcontent">
+        <h1 style="color:white;font-size:64px;margin-top:20vh;">What is lorem ipsum?</h1>
+        <textarea id="inputans" placeholder="Insert your answer"></textarea>
+        <button onclick='socket.emit("check answer", code+document.getElementById("inputans").value);create_notif("Your answer has been sent", "")'>Go!</button>
+      </div>
+    </div>
+  </div>
+  <img src="https://static.thenounproject.com/png/2206184-200.png" id="chatcon" height="40px;" onclick='document.getElementById("chatcon").style.right="-60px";document.getElementById("chat").style.right = "20px";setTimeout(function(){document.getElementById("chatcon").style.display="none";}, 500)'>
+  <div id="chat">
+    <span class="class" onclick='document.getElementById("chatcon").style.display="block";document.getElementById("chatcon").style.right="0px";document.getElementById("chat").style.right = "-340px";'>&nbsp;&times;</span>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    var socket = io();
+    var jsonstr = new Map()
+    var prv = []
+    var current_user = undefined
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code")
+    const name = urlParams.get("name")
+    var yourturn = false
+    
+    socket.emit("nodejs eval", "socket.join('"+code+"')")
+    socket.emit("nodejs eval", "socket.to('"+code+"').emit('host eval', 'addnametoboard(\""+name+"\");socket.emit(\"json string\", code+JSON.stringify(jsoncode))')")
+
+    function key(map, num){
+      obj = Object.keys(map)
+      return obj[num]
+    }
+    function render(jsonstr){
+      for (var topp = 1;topp<6;topp++){
+          document.getElementById("t"+topp.toString()).innerHTML = (jsonstr.game.topics[topp-1])
+        }
+        a = document.querySelectorAll(".prob")
+        for (var num = 0;num<5;num++){
+          pr = jsonstr.game.moreinfo.price[num]
+          a[num*5].innerHTML=pr
+          a[num*5+1].innerHTML=pr
+          a[num*5+2].innerHTML=pr
+          a[num*5+3].innerHTML=pr
+          a[num*5+4].innerHTML=pr
+        }
+    }
+    window.onload = function(){
+      document.getElementById("chatcon").style.right="0px;"
+      var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var myObj = JSON.parse(this.responseText);
+        jsonstr = myObj
+        render(jsonstr)
+      }
+    }}
+    socket.on("json string", (jscodeon)=>{
+      if (jscodeon === "nothing"){
+        xmlhttp.open("GET", "testgame.json", true);
+        xmlhttp.send();
+      }else{
+        render(JSON.parse(jscodeon))
+        jsonstr = JSON.parse(jscodeon)
+      }
+    });
+    socket.emit("chat message", code+name+" has connected")
+    /*ids = document.querySelectorAll(".prob" onclick="if(yourturn===true){show(this.parentElement.id,this.cellIndex,this);this.onclick='';this.classList.add('visited')}")
+    for (var z = 0;z<ids.length;ids++){
+      ids[z].onclick=""
+    }*/
+    function show(parent, index, element){
+      document.getElementById("inputans").value=""
+      document.getElementById("cardd").style="display:block;transform:none;"
+      document.getElementById("carddcontent").style.display="block"
+      document.getElementById("answerkey").style.display="none"
+      thing = `element=document.querySelectorAll('#${parent}>th')[${index}];element.onclick='';element.classList.add('visited')`
+      socket.emit("host eval", code+thing)
+      socket.emit("nodejs eval", `CHOSEN.get("${code}").push("${parent}"+"${index}")`)
+      if ([parent, index, element] !== prv){
+        socket.emit("question select", [code, parent, index, element])
+        keyy = key(eval("jsonstr.game."+parent), index)
+        $("#cardd>div>h1").html(keyy)
+        ans=eval(`jsonstr.game.${parent}["${keyy}"]`)
+        document.getElementById("answerkey").innerHTML=ans
+        prv=[parent, index, element] 
+        MathJax.typeset()
+      }
+    }
+    socket.on("answer data", (data)=>{
+      document.getElementById("inputans").value = data
+    })
+    socket.on("host choose next player", (username)=>{
+      console.log(username, name, username===name)
+      if (username === name){
+        yourturn=true;
+        document.getElementById("inputans").disabled = false
+        document.querySelector("#carddcontent>button").disabled = false
+      }else{
+        yourturn=false;
+        document.getElementById("inputans").disabled = true
+        document.querySelector("#carddcontent>button").disabled = true
+      }
+    })
+    document.getElementById("inputans").onkeyup = function(){
+      setTimeout(function(){
+      socket.emit("answer data", code+document.getElementById("inputans").value)}, 0.00000000000000000000000000000000000000000001)
+    }
+    socket.on("score", (data)=>{
+      if (data === "incorrect"){
+        create_notif("your answer was "+data, "x.style.backgroundImage='linear-gradient(to right, #ad0d0d, #d11e1e, #f32c2c)'")
+      }
+      else{
+        create_notif("your answer was "+data, "")
+      }
+    })
+    socket.on("question select", (data)=>{
+      data = eval(data)
+      show(data[0], data[1], data[2])
+    })
+    function create_notif(text, other){
+      xxxx = document.createElement("SPAN")
+      yyyy = document.createTextNode(text)
+      xxxx.classList.add("notif")
+      xxxx.classList.add("animate")
+      xxxx.onclick = setTimeout(function(){xxxx.classList.remove("animate");xxxx.classList.add("animateout");setTimeout(()=>{xxxx.remove()},600)},2000)
+      xxxx.appendChild(yyyy)
+      eval(other)
+      document.body.appendChild(xxxx)
+    }
+    function show_answer(){
+      document.getElementById("cardd").style = "transform:rotateY(360deg);transition:3.5s;"
+      setTimeout(function(){
+        document.getElementById("carddcontent").style.display="none"
+        document.getElementById("answerkey").style.display="block"
+        },
+      1600)
+    }
+    socket.on("eval", (data)=>{
+      eval(data)
+    })
+    socket.on("initthequestiondisable", (data)=>{
+      for (var ars = 0;ars<data.length;ars++){
+        iteration = data[ars]
+        console.log(iteration)
+        listtt = document.querySelectorAll("#"+iteration.substring(0,4)+">th")
+        listtt[iteration[4]].classList.add("visited")
+        listtt[iteration[4]].onclick=""
+      }
+    })
+    socket.on("host user kick", (username)=>{
+      if (username === name){
+        window.location.href = "/join?" + new URLSearchParams({error: "You were kicked from the game by the host."});
+      }else{
+        for (var rep = 0;rep<username.length;rep++){
+          username = username.replace(' ', '_')
+        }
+        document.getElementById('score'+username).remove()
+      }
+    })
+    function create_scores(name) {
+      named = name
+      for (var rep = 0;rep<name.length;rep++){
+        var named = named.replace(' ', '_')
+      }
+      frame = document.createElement("DIV")
+      frame.setAttribute("id", "score" + named)
+      frame.classList.add("scoreframe")
+      scoree = document.createElement("P")
+      textt = document.createTextNode(named)
+      points = document.createElement("INPUT")
+      points.setAttribute("id", named + "valuee")
+      points.setAttribute("disabled", "")
+      points.setAttribute("value", "0")
+      points.style.textAlign = "center"
+      scoree.appendChild(textt)
+      frame.appendChild(scoree)
+      frame.appendChild(document.createElement("HR"))
+      frame.appendChild(points)
+      document.getElementById("gamee").appendChild(frame)
+    }
+    socket.on("do_scores", (data)=>{
+      data.forEach(element=>create_scores(element))
+    })
+  function deletethisuser(){
+    socket.emit("host eval", code+"players.delete('"+name+"');redo_scores();socket.emit('chat message', code+'"+name+" has disconnected')")
+  }
+  //For the chat
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (input.value) {
+      socket.emit('chat message', code+name+": "+input.value);
+      input.value = '';
+    }
+  });
+
+  socket.on('chat message', function(msg) {
+    var item = document.createElement('li');
+    item.textContent = msg;
+    messages.appendChild(item);
+    document.getElementById("chat").scrollTo(0, document.getElementById("chat").scrollHeight);
+  });
+  </script>
+</body>
+</html>

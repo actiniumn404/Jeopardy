@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Jeopardy Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+      html{
+        background-color:#48049c;
+        color:white !important;
+        padding:0;
+        margin:0;
+      }
+      a{
+        color:darkgray;
+      }
+      main > span{
+        position:absolute;
+        left:50%;
+        transform: translate(-50%, -50%);
+      }
+      main > span>h1{
+        color:#c953bf;
+        /*position:absolute;*/
+        font-size:60px;
+        /*left[:50%;
+        margin-top:20px;*/
+        /*transform: translate(-50%, -50%);*/
+      }
+      main > span> span{
+        /*position:absolute;
+        left:50%;*/
+        /*margin-top: 200px;
+        transform: translate(-50%, -50%);*/
+        font-size:18px;
+      }
+      #bannertext::after, #info::after {
+        animation-name: flicker;
+        animation-iteration-count: infinite;
+        content: "";
+        animation-duration: 1.25s;
+        position: absolute;
+      }
+
+      @keyframes flicker {
+        0% {content: "_";}
+        50% {content: "";}
+        100% {content: "_";}
+      }
+    </style>
+    <script>
+      
+    </script>
+</head>
+<body>
+  <div id="navbar">
+  </div>
+  <!--<h1>hi, dev here. This index.html page is useless. If you want to see the real code, go to the <a href="/play">play screen</a> or the <a href="/host">host screen</a><br>I might write a MarkDown document explaining how to play... but since a lot of stuff is changed while coding, I'll wait till when I'm done to do that.</h1>-->
+  <main style="margin:none;padding:none;">
+    <span><h1 id="bannertext"></h1><br><span id="info"></span></span>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var i = 0;
+    var txt = 'Jeopardy Multiplayer'; /* The text */
+    var speed = 100; /* The speed/duration of the effect in milliseconds */
+    var ii = 0
+    var textt = "Jeopardy Multiplayer is a way to play a classic game of jeopardy online, without creating a meeting and sharing your screen. No sign up or payment is required. Just create a set, press \"host\", type in the code on the client side and BOOM! you are connected! Using socket.io (You can pop that link into the url bar) I can create a two way server connection hence allowing a real-time multiplayer game."
+
+    function typeWriter() {
+      if (i < txt.length) {
+        document.getElementById("bannertext").innerHTML += txt.charAt(i);
+        i++;
+        setTimeout(typeWriter, speed);
+      }
+    }
+    function typeWriter2() {
+      if (ii < textt.length) {
+        document.getElementById("info").innerHTML += textt.charAt(ii);
+        ii++;
+        setTimeout(typeWriter2, 20);
+      }
+    }
+    window.onload = function(){
+      typeWriter()
+      typeWriter2()
+      fetch("/navbar").then(data=>data.text()).then(data=>document.getElementById("navbar").innerHTML = data)
+    }
+  </script>
+</body>
+</html>

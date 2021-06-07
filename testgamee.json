@@ -1,0 +1,55 @@
+{
+  "game":{
+    "topics":[
+      "Math",
+      "Science",
+      "Games",
+      "Geography",
+      "Coding"
+    ],
+    "col1":{
+      "Math is awesome?":"yes",
+      "Science is interesting?":"yes",
+      "Games are fun?":"yes",
+      "Geography is fun?":"yes",
+      "Coding is awesome?":"yes"
+    },
+    "col2":{
+      "Math helps you?":"yes",
+      "Name one person who hates science but was a president":"Trump",
+      "Name the game that spiked in 2020":"Among us",
+      "Name a person who says he's good at geography but is super annoying":"omkar",
+      "Name the two people who created among you.py":"Wesley Wu and Andrew Chen"
+    },
+    "col3":{
+      "Math is...":"the best",
+      "Science is...":"interesting",
+      "Games are not liked by...":"parents",
+      "Name the capital of Keuxvined Laquxnded":"Catuxpital",
+      "Name my coding platform":"repl.it"
+    },
+    "col4":{
+      "What is ":"1",
+      "What is the longest scientific word?":"PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS",
+      "What is KSP":"Kerbal Space Program",
+      "What is the capital of Catuxpital":"FAKE it doesn't exist",
+      "Name my username on repl.it (Wesley's)":"WWWtheW"
+    },
+    "col5":{
+      "This isn't a math question, right?":"no",
+      "Are there earthquakes in Chicago":"yes",
+      "I ran out of ideas, just say skip.":"skip",
+      "Name a mountain range in Washington (State)":"Cascades",
+      "Name a language that needs two other languages to function and look good":"HTML"
+    },
+    "moreinfo":{
+      "price":[
+        "100",
+        "200",
+        "300",
+        "400",
+        "500"
+      ]
+    }
+  }
+}

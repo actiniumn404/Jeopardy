@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link href="https://pbs.twimg.com/profile_images/1345847875066941440/bXtiSNNo.jpg" rel="icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      testgameejson = `{{  "game":{    "topics":[      "Math",      "Science",      "Games",      "Geography",      "Coding"    ],    "col1":{      "Math is awesome?":"yes",      "Science is interesting?":"yes",      "Games are fun?":"yes",      "Geography is fun?":"yes",      "Coding is awesome?":"yes"    },    "col2":{      "Math helps you?":"yes",      "Name one person who hates science but was a president":"Trump",      "Name the game that spiked in 2020":"Among us",      "Name a person who says he's good at geography but is super annoying":"omkar",      "Name the two people who created among you.py":"Wesley Wu and Andrew Chen"    },    "col3":{      "Math is...":"the best",      "Science is...":"interesting",      "Games are not liked by...":"parents",      "Name the capital of Keuxvined Laquxnded":"Catuxpital",      "Name my coding platform":"repl.it"    },    "col4":{      "What is ":"1",      "What is the longest scientific word?":"PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS",      "What is KSP":"Kerbal Space Program",      "What is the capital of Catuxpital":"FAKE it doesn't exist",      "Name my username on repl.it (Wesley's)":"WWWtheW"    },    "col5":{      "This isn't a math question, right?":"no",      "Are there earthquakes in Chicago":"yes",      "I ran out of ideas, just say skip.":"skip",      "Name a mountain range in Washington (State)":"Cascades",      "Name a language that needs two other languages to function and look good":"HTML"    },    "moreinfo":{      "price":[        "100",        "200",        "300",        "400",        "500"      ]    }  }}`
+      function settestgameedeck(){
+        document.getElementById("testgameedeck").onclick = "window.open('/host?json="+testgameejson+"')"
+        console.log(document.getElementById("testgameedeck"))
+      }
+      var socket = io()
+
+      identificationid = ""
+      for (i=0;i<20;i++){
+        random_ascii = Math.floor(Math.random()*94)+33
+        if (["\"","\'","\\","[","]"].includes(random_ascii)){
+          continue
+        } else {
+          identificationid+=String.fromCharCode(random_ascii)
+        }
+      }
+    </script>
+    <title>Community</title>
+    <style>
+      html{
+        text-align:center;
+        background-color:#48049c;
+        color:white;
+      }
+      .deck{
+        width:20vw;
+        margin:0;
+        border:1px dotted black;
+        height:35vh;
+        background-color:gray;
+        cursor:pointer;
+        transition:0.5s;
+      }
+      .play{
+        width:20vw;
+        background-color:white;
+        color:black;
+      }
+      .deck:active{
+        background-color:black;
+      }
+      /*.deck::after{
+        content:"<br><button onclick='' class='play'>Play this deck!</button>";
+      }*/
+    </style>
+  </head>
+  <body onload="socket.emit('request decks',identificationid);settestgameedeck();">
+    </script>
+    <h1>Default Decks (Made by WWWtheW and AndrewChen51)</h1>
+    <div class="deck" onclick="window.open('/host')">
+      Jeopardy name: Testgame
+      <br>
+      Creator name: WWWtheW and AndrewChen51
+      <br>
+      <span style='font-size:36px;color:cyan;'><b>Click the deck to play!</b></span>
+    </div>
+    <div class="deck" id="testgameedeck" onclick='window.open("/host?json={{  &quot;game&quot;:{    &quot;topics&quot;:[      &quot;Math&quot;,      &quot;Science&quot;,      &quot;Games&quot;,      &quot;Geography&quot;,      &quot;Coding&quot;    ],    &quot;col1&quot;:{      &quot;Math is awesome?&quot;:&quot;yes&quot;,      &quot;Science is interesting?&quot;:&quot;yes&quot;,      &quot;Games are fun?&quot;:&quot;yes&quot;,      &quot;Geography is fun?&quot;:&quot;yes&quot;,      &quot;Coding is awesome?&quot;:&quot;yes&quot;    },    &quot;col2&quot;:{      &quot;Math helps you?&quot;:&quot;yes&quot;,      &quot;Name one person who hates science but was a president&quot;:&quot;Trump&quot;,      &quot;Name the game that spiked in 2020&quot;:&quot;Among us&quot;,      &quot;Name a person who says he&quot;s good at geography but is super annoying&quot;:&quot;omkar&quot;,      &quot;Name the two people who created among you.py&quot;:&quot;Wesley Wu and Andrew Chen&quot;    },    &quot;col3&quot;:{      &quot;Math is...&quot;:&quot;the best&quot;,      &quot;Science is...&quot;:&quot;interesting&quot;,      &quot;Games are not liked by...&quot;:&quot;parents&quot;,      &quot;Name the capital of Keuxvined Laquxnded&quot;:&quot;Catuxpital&quot;,      &quot;Name my coding platform&quot;:&quot;repl.it&quot;    },    &quot;col4&quot;:{      &quot;What is &quot;:&quot;1&quot;,      &quot;What is the longest scientific word?&quot;:&quot;PNEUMONOULTRAMICROSCOPICSILICOVOLCANOCONIOSIS&quot;,      &quot;What is KSP&quot;:&quot;Kerbal Space Program&quot;,      &quot;What is the capital of Catuxpital&quot;:&quot;FAKE it doesn&quot;t exist&quot;,      &quot;Name my username on repl.it (Wesley&quot;s)&quot;:&quot;WWWtheW&quot;    },    &quot;col5&quot;:{      &quot;This isn&quot;t a math question, right?&quot;:&quot;no&quot;,      &quot;Are there earthquakes in Chicago&quot;:&quot;yes&quot;,      &quot;I ran out of ideas, just say skip.&quot;:&quot;skip&quot;,      &quot;Name a mountain range in Washington (State)&quot;:&quot;Cascades&quot;,      &quot;Name a language that needs two other languages to function and look good&quot;:&quot;HTML&quot;    },    &quot;moreinfo&quot;:{      &quot;price&quot;:[        &quot;100&quot;,        &quot;200&quot;,        &quot;300&quot;,        &quot;400&quot;,        &quot;500&quot;      ]    }  }}&quot;")'>
+      Jeopardy name: Testgamee
+      <br>
+      Creator name: WWWtheW and AndrewChen51
+      <br>
+      <span style='font-size:36px;color:cyan;'><b>Click the deck to play!</b></span>
+    </div>
+    <h1>Community Decks</h1>
+    <div id="communitydecks"></div>
+    <script>
+      //decks will contain [dict of decks {num: [json code, list of jeopardy name, creator]}, verification id]
+      socket.on("decks sended",(lst)=>{
+        console.log("will this work")
+        if (lst[1] === identificationid){
+          console.log("heyyy")
+          console.log(Array.from(lst[0]).length)
+          for (var i=0;i<lst[0].size;i++){
+            console.log("What the f---")
+            var currentdictthing = lst[0][i]
+            console.log(currentdictthing)
+            var communitydecks = document.getElementById("communitydecks")
+            console.log(communitydecks)
+            var newdeck = document.createElement("DIV")
+            var text = document.createTextNode("Jeopardy name: "+currentdictthing[1]+"<br>Creator name: "+currentdictthing[2]+"<br><span style='font-size:36px;color:cyan;'><b>Click the deck to play!</b></span>")
+            newdeck.appendChild(text)
+            newdeck.setAttribute("class","deck")
+            //newdeck.setAttribute("data-json",currentdictthing[0])
+            newdeck.setAttribute("onclick","/host?json="+currentdictthing[0])
+            player.appendChild(newdeck)
+          }
+        }
+      });
+  </body>
+</html>

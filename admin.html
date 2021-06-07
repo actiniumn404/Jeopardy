@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Admin Contols</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://pbs.twimg.com/profile_images/1345847875066941440/bXtiSNNo.jpg" rel="icon">
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const num = urlParams.get("admin")
+      if (num === "true"){
+        window.location.replace("https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstleyVEVO")
+      }else{
+        if (num !== "false"){
+          window.location.replace("https://jeopardy.andrewchen51.repl.co/admin?admin=false")
+        }
+      }
+    </script>
+    <style>
+      *{
+        text-align:center;
+        background-color:#48049c;
+        color:white;
+      }
+      .error{
+        position:absolute;
+        top:0;
+        width:75vw;
+        background-image: linear-gradient(to right, #ad0d0d, #d11e1e, #f32c2c);
+        color: white;
+        padding: 17px;
+        border-radius: 5px;
+        margin: 50vh 12vw;
+        font-family: Arial, sans-serif !important;
+        border: none;
+        display: block;
+      }
+      input[type=text], input[type=password]{
+        background-color:white;
+        border:3px solid darkgray;
+        outline:none;
+        color:black;
+        width:575px;
+        height:65px;
+        font-size:24px;
+        margin:5px;
+      }
+      form{
+        padding:1vw;
+        border:1px solid white;
+        width:50vw;
+        margin-left:25vw;
+      }
+      input[type=submit]{
+        outline:none;
+        width:585px;
+        height:45px;
+        border:none;
+        background-color:#4CAF50;
+        font-size:18px;
+        border-radius:5px;
+      }
+    </style>
+  </head>
+  <body>
+    <span class="error">Oh No! it looks like you have been denied access to the admin controls. Please sign in</span>
+    <b><h1>Sign in</h1></b>
+    <form>
+      <input style="display:none;" name="admin" value="true">
+      <input type="text" name="uname" placeholder="Username..." autocomplete="off" required><br>
+      <input type="password" name="psword" placeholder="Password..." autocomplete="off" required><br>
+      <input type="submit">
+    </form>
+  </body>
+</html>
