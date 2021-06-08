@@ -1,3 +1,4 @@
+//Jeopardy by Andrew C. This is not affiliated in any way with Jeoardy or Sony Pictures Inc.
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
