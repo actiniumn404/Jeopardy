@@ -38,10 +38,10 @@ app.get('/host', (req, res) => {
   res.sendFile(__dirname + '/host.html');
 });
 app.get('/testgame.json', (req, res) => {
-  res.sendFile(__dirname + '/testgame.json');
+  res.sendFile(__dirname + '/json/testgame.json');
 });
 app.get('/testgamee.json', (req, res) => {
-  res.sendFile(__dirname + '/testgamee.json');
+  res.sendFile(__dirname + '/json/testgamee.json');
 });
 app.get('/join', (req, res) => {
   res.sendFile(__dirname + '/join.html');
