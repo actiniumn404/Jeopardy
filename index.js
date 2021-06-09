@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 app.get('/community', (req, res) => {
-  res.sendFile(__dirname + '/community.html');
+  res.sendFile(__dirname + '/WIP/community.html');
 });
 app.get('/navbar', (req, res) => {
   res.sendFile(__dirname + '/navbar.html');
@@ -48,7 +48,7 @@ app.get('/join', (req, res) => {
   res.sendFile(__dirname + '/join.html');
 });
 app.get('/admin', (req, res)=>{
-  res.sendFile(__dirname + '/admin.html')
+  res.sendFile(__dirname + '/WIP/admin.html')
 });
 app.get('/save', (req, res)=>{
   jsonfile.set(communitynum, [req.query.jeopardyjson,req.query.jeopardyname,req.query.creatorname])
@@ -157,7 +157,7 @@ app.get('/logo.png', (req, res)=>{
   res.sendFile(__dirname + '/logo.png')
 })
 app.get('/help', (req, res)=>{
-  res.sendFile(__dirname + '/help.html')
+  res.sendFile(__dirname + '/WIP/help.html')
 })
 app.get('/create', (req, res)=>{
   res.sendFile(__dirname + '/create.html')
