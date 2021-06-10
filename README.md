@@ -1,7 +1,8 @@
 # Jeopardy Multiplayer
 #### by Andrew C (@Actiniumn404)
 -------------
-Jeopardy Multiplayer is a way to play a classic game of jeopardy online, without creating a meeting and sharing your screen. No sign up or payment is required. This was made possible with websockets. **Jeopardy Multiplayer is not affiliated with Jeopardy!® or Sony Pictures Digital Inc.**
+Made with **NodeJS,** Jeopardy Multiplayer is a way to play a classic game of jeopardy online, without creating a meeting and sharing your screen. No sign up or payment is required. This was made possible with websockets. **Jeopardy Multiplayer is not affiliated with Jeopardy!® or Sony Pictures Digital Inc.**
+[Live server](https://jeopardy.andrewchen51.repl.co/)
 
 ### Usage
 ----
